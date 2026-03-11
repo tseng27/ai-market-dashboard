@@ -1,787 +1,416 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Global Market Intelligence</title>
+<meta charset="UTF-8">
+<title>AI Global Market Terminal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <style>
-    :root{
-      --bg:#050b18;
-      --panel:#111827;
-      --panel-2:#0f172a;
-      --text:#f8fafc;
-      --muted:#94a3b8;
-      --blue:#60a5fa;
-      --yellow:#facc15;
-      --green:#22c55e;
-      --red:#ef4444;
-      --border:rgba(255,255,255,0.08);
-      --shadow:0 8px 28px rgba(0,0,0,0.32);
-      --radius:16px;
-    }
+<style>
 
-    *{box-sizing:border-box}
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:#050b18;
+color:white;
+padding:30px;
+}
 
-    body{
-      margin:0;
-      font-family:Arial,"Microsoft JhengHei",sans-serif;
-      background:linear-gradient(180deg,#040916 0%,#071224 35%,#0b1528 100%);
-      color:var(--text);
-      padding:28px;
-    }
+.container{
+max-width:1600px;
+margin:auto;
+}
 
-    .container{
-      max-width:1600px;
-      margin:0 auto;
-    }
+h1{
+font-size:42px;
+margin-bottom:10px;
+}
 
-    h1{
-      margin:0 0 8px 0;
-      font-size:42px;
-      letter-spacing:0.5px;
-    }
+.subtitle{
+color:#9ca3af;
+margin-bottom:30px;
+}
 
-    .subtitle{
-      color:var(--muted);
-      font-size:17px;
-      margin-bottom:8px;
-    }
+.section{
+margin-top:40px;
+}
 
-    .date{
-      color:var(--yellow);
-      font-size:15px;
-      margin-bottom:24px;
-    }
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:20px;
+}
 
-    .topbar{
-      display:flex;
-      gap:16px;
-      flex-wrap:wrap;
-      margin-bottom:24px;
-    }
+.card{
+background:#111827;
+border-radius:14px;
+padding:20px;
+}
 
-    .hero-card{
-      flex:1 1 260px;
-      background:rgba(17,24,39,0.94);
-      border-radius:var(--radius);
-      padding:18px 20px;
-      box-shadow:var(--shadow);
-      border:1px solid var(--border);
-    }
+.card h3{
+color:#60a5fa;
+margin-bottom:15px;
+}
 
-    .hero-label{
-      color:var(--muted);
-      font-size:13px;
-      margin-bottom:8px;
-    }
+.item{
+display:flex;
+justify-content:space-between;
+padding:8px 0;
+border-bottom:1px solid rgba(255,255,255,0.05);
+}
 
-    .hero-value{
-      font-size:28px;
-      font-weight:700;
-    }
+.value{
+font-weight:bold;
+}
 
-    .section{
-      margin-top:34px;
-    }
+.heatmap{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:12px;
+}
 
-    .section h2{
-      margin:0 0 16px 0;
-      font-size:24px;
-      color:#e5e7eb;
-    }
+.heat{
+padding:16px;
+border-radius:10px;
+}
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-      gap:18px;
-    }
+.chart-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+gap:20px;
+}
 
-    .card{
-      background:rgba(17,24,39,0.95);
-      border-radius:var(--radius);
-      padding:20px;
-      box-shadow:var(--shadow);
-      border:1px solid var(--border);
-    }
+.tv-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(400px,1fr));
+gap:20px;
+}
 
-    .card h3{
-      margin:0 0 14px 0;
-      color:var(--blue);
-      font-size:20px;
-    }
+.tv-card{
+background:#111827;
+padding:20px;
+border-radius:14px;
+}
 
-    .item{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      padding:10px 0;
-      border-bottom:1px solid var(--border);
-      font-size:17px;
-    }
+canvas{
+height:260px !important;
+}
 
-    .item:last-child{
-      border-bottom:none;
-    }
+.badge{
+padding:4px 8px;
+border-radius:6px;
+font-size:12px;
+}
 
-    .label{
-      color:#e5e7eb;
-    }
+.bull{background:#064e3b;color:#34d399}
+.bear{background:#7f1d1d;color:#f87171}
+.neutral{background:#374151;color:#e5e7eb}
 
-    .value{
-      color:#ffffff;
-      font-weight:600;
-      text-align:right;
-    }
-
-    .triple-grid{
-      display:grid;
-      grid-template-columns:1.15fr 0.85fr 1fr;
-      gap:18px;
-    }
-
-    @media (max-width:1200px){
-      .triple-grid{
-        grid-template-columns:1fr;
-      }
-    }
-
-    .heatmap{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-      gap:12px;
-    }
-
-    .heat-tile{
-      border-radius:14px;
-      padding:16px;
-      min-height:92px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      box-shadow:var(--shadow);
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
-    .heat-symbol{
-      font-size:15px;
-      color:#ffffff;
-      font-weight:700;
-    }
-
-    .heat-price{
-      font-size:22px;
-      font-weight:700;
-      color:#ffffff;
-    }
-
-    .heat-change{
-      font-size:14px;
-      font-weight:700;
-    }
-
-    .sentiment-list .item{
-      align-items:center;
-    }
-
-    .badge{
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:13px;
-      font-weight:700;
-      display:inline-block;
-      min-width:82px;
-      text-align:center;
-    }
-
-    .bullish{
-      background:rgba(34,197,94,0.16);
-      color:#86efac;
-    }
-
-    .bearish{
-      background:rgba(239,68,68,0.16);
-      color:#fca5a5;
-    }
-
-    .neutral{
-      background:rgba(250,204,21,0.14);
-      color:#fde68a;
-    }
-
-    .brief{
-      line-height:1.95;
-      color:#e5e7eb;
-      white-space:pre-line;
-    }
-
-    .brief strong{
-      color:var(--yellow);
-    }
-
-    .chart-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
-      gap:18px;
-    }
-
-    .chart-card{
-      background:rgba(17,24,39,0.95);
-      border-radius:var(--radius);
-      padding:20px;
-      box-shadow:var(--shadow);
-      border:1px solid var(--border);
-    }
-
-    .chart-card h3{
-      margin:0 0 12px 0;
-      font-size:20px;
-      color:#f8fafc;
-    }
-
-    canvas{
-      width:100% !important;
-      height:260px !important;
-    }
-
-    .tv-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
-      gap:18px;
-    }
-
-    .tv-card{
-      background:rgba(17,24,39,0.95);
-      border-radius:var(--radius);
-      padding:20px;
-      box-shadow:var(--shadow);
-      border:1px solid var(--border);
-      min-height:320px;
-    }
-
-    .tv-card h3{
-      margin:0 0 12px 0;
-      font-size:20px;
-      color:#f8fafc;
-    }
-
-    .footer-note{
-      margin-top:36px;
-      color:var(--muted);
-      font-size:14px;
-      text-align:center;
-    }
-  </style>
+</style>
 </head>
 
+
 <body>
-  <div class="container">
 
-    <h1>AI 全球市場觀察站</h1>
-    <div class="subtitle">Bloomberg Style Market Intelligence Terminal｜市場監控 × 熱力圖 × AI 摘要 × 技術圖表</div>
-    <div class="date" id="date">更新中...</div>
+<div class="container">
 
-    <div class="topbar">
-      <div class="hero-card">
-        <div class="hero-label">AI 市場總評</div>
-        <div class="hero-value" id="marketScore">分析中...</div>
-      </div>
-      <div class="hero-card">
-        <div class="hero-label">市場情緒</div>
-        <div class="hero-value" id="overallSentiment">分析中...</div>
-      </div>
-      <div class="hero-card">
-        <div class="hero-label">焦點資產</div>
-        <div class="hero-value" id="heroFocus">分析中...</div>
-      </div>
-    </div>
+<h1>AI Global Market Terminal</h1>
+<div class="subtitle">Global Market Intelligence Dashboard</div>
 
-    <div class="section">
-      <h2>市場總覽</h2>
 
-      <div class="grid">
+<div class="section">
 
-        <div class="card">
-          <h3>Crypto</h3>
-          <div class="item"><span class="label">BTC</span><span class="value" id="btc">讀取中...</span></div>
-          <div class="item"><span class="label">ETH</span><span class="value" id="eth">讀取中...</span></div>
-        </div>
+<div class="grid">
 
-        <div class="card">
-          <h3>US Index</h3>
-          <div class="item"><span class="label">S&amp;P500</span><span class="value" id="sp500">讀取中...</span></div>
-          <div class="item"><span class="label">NASDAQ</span><span class="value" id="nasdaq">讀取中...</span></div>
-          <div class="item"><span class="label">Dow Jones</span><span class="value" id="dow">讀取中...</span></div>
-        </div>
+<div class="card">
+<h3>Crypto</h3>
+<div class="item"><span>BTC</span><span id="btc" class="value"></span></div>
+<div class="item"><span>ETH</span><span id="eth" class="value"></span></div>
+</div>
 
-        <div class="card">
-          <h3>Taiwan</h3>
-          <div class="item"><span class="label">TAIEX</span><span class="value" id="taiex">讀取中...</span></div>
-          <div class="item"><span class="label">TSMC</span><span class="value" id="tsmc">讀取中...</span></div>
-        </div>
+<div class="card">
+<h3>US Index</h3>
+<div class="item"><span>S&P500</span><span id="sp500" class="value"></span></div>
+<div class="item"><span>NASDAQ</span><span id="nasdaq" class="value"></span></div>
+<div class="item"><span>Dow</span><span id="dow" class="value"></span></div>
+</div>
 
-        <div class="card">
-          <h3>Commodities</h3>
-          <div class="item"><span class="label">Gold</span><span class="value" id="gold">讀取中...</span></div>
-          <div class="item"><span class="label">Oil</span><span class="value" id="oil">讀取中...</span></div>
-        </div>
+<div class="card">
+<h3>Taiwan</h3>
+<div class="item"><span>TAIEX</span><span id="taiex" class="value"></span></div>
+<div class="item"><span>TSMC</span><span id="tsmc" class="value"></span></div>
+</div>
 
-        <div class="card">
-          <h3>Forex</h3>
-          <div class="item"><span class="label">USDJPY</span><span class="value" id="usd">讀取中...</span></div>
-        </div>
+<div class="card">
+<h3>Commodities</h3>
+<div class="item"><span>Gold</span><span id="gold" class="value"></span></div>
+<div class="item"><span>Oil</span><span id="oil" class="value"></span></div>
+</div>
 
-        <div class="card">
-          <h3>US Tech</h3>
-          <div class="item"><span class="label">NVDA</span><span class="value" id="nvda">讀取中...</span></div>
-          <div class="item"><span class="label">AAPL</span><span class="value" id="aapl">讀取中...</span></div>
-          <div class="item"><span class="label">MSFT</span><span class="value" id="msft">讀取中...</span></div>
-        </div>
+<div class="card">
+<h3>Forex</h3>
+<div class="item"><span>USDJPY</span><span id="usd" class="value"></span></div>
+</div>
 
-        <div class="card">
-          <h3>Taiwan Tech</h3>
-          <div class="item"><span class="label">聯發科</span><span class="value" id="mediatek">讀取中...</span></div>
-          <div class="item"><span class="label">鴻海</span><span class="value" id="foxconn">讀取中...</span></div>
-        </div>
+</div>
+</div>
 
-        <div class="card">
-          <h3>Futures</h3>
-          <div class="item"><span class="label">S&amp;P500 Futures</span><span class="value" id="sp500f">讀取中...</span></div>
-          <div class="item"><span class="label">NASDAQ Futures</span><span class="value" id="nasdaqf">讀取中...</span></div>
-        </div>
 
-      </div>
-    </div>
+<div class="section">
+<h2>Market Heatmap</h2>
+<div id="heatmap" class="heatmap"></div>
+</div>
 
-    <div class="section">
-      <h2>AI 市場分析中心</h2>
 
-      <div class="triple-grid">
+<div class="section">
+<h2>30 Day Trends</h2>
 
-        <div class="card">
-          <h3>市場熱力圖</h3>
-          <div class="heatmap" id="heatmap"></div>
-        </div>
+<div class="chart-grid">
 
-        <div class="card sentiment-list">
-          <h3>市場情緒</h3>
-          <div class="item"><span class="label">Crypto</span><span id="sentCrypto" class="badge neutral">分析中</span></div>
-          <div class="item"><span class="label">US Stocks</span><span id="sentStocks" class="badge neutral">分析中</span></div>
-          <div class="item"><span class="label">Taiwan Tech</span><span id="sentTaiwan" class="badge neutral">分析中</span></div>
-          <div class="item"><span class="label">Gold</span><span id="sentGold" class="badge neutral">分析中</span></div>
-          <div class="item"><span class="label">Dollar</span><span id="sentDollar" class="badge neutral">分析中</span></div>
-        </div>
+<div class="card">
+<h3>BTC</h3>
+<canvas id="btcChart"></canvas>
+</div>
 
-        <div class="card">
-          <h3>AI 每日市場摘要</h3>
-          <div class="brief" id="aiBrief">AI 正在分析市場資料...</div>
-        </div>
+<div class="card">
+<h3>S&P500</h3>
+<canvas id="spChart"></canvas>
+</div>
 
-      </div>
-    </div>
+<div class="card">
+<h3>TSMC</h3>
+<canvas id="tsmcChart"></canvas>
+</div>
 
-    <div class="section">
-      <h2>30 天市場走勢</h2>
+<div class="card">
+<h3>Gold</h3>
+<canvas id="goldChart"></canvas>
+</div>
 
-      <div class="chart-grid">
-        <div class="chart-card">
-          <h3>BTC</h3>
-          <canvas id="btcChart"></canvas>
-        </div>
+</div>
+</div>
 
-        <div class="chart-card">
-          <h3>S&amp;P500</h3>
-          <canvas id="spChart"></canvas>
-        </div>
 
-        <div class="chart-card">
-          <h3>TSMC</h3>
-          <canvas id="tsmcChart"></canvas>
-        </div>
+<div class="section">
 
-        <div class="chart-card">
-          <h3>Gold</h3>
-          <canvas id="goldChart"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-     <h2>全球市場技術圖表</h2>
+<h2>Global Technical Charts</h2>
 
 <div class="tv-grid">
 
 <div class="tv-card">
+
 <h3>S&P500</h3>
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
+
 {
-"symbol": "OANDA:SPX500USD",
-"width": "100%",
-"height": "260",
-"locale": "zh_TW",
-"dateRange": "1M",
-"colorTheme": "dark"
+"symbol":"OANDA:SPX500USD",
+"width":"100%",
+"height":"260",
+"locale":"zh_TW",
+"dateRange":"1M",
+"colorTheme":"dark"
 }
+
 </script>
 
 </div>
 
 
+
 <div class="tv-card">
+
 <h3>NASDAQ</h3>
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
+
 {
-"symbol": "CAPITALCOM:US100",
-"width": "100%",
-"height": "260",
-"locale": "zh_TW",
-"dateRange": "1M",
-"colorTheme": "dark"
+"symbol":"CAPITALCOM:US100",
+"width":"100%",
+"height":"260",
+"locale":"zh_TW",
+"dateRange":"1M",
+"colorTheme":"dark"
 }
+
 </script>
 
 </div>
 
 
+
 <div class="tv-card">
+
 <h3>Dow Jones</h3>
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
+
 {
-"symbol": "CAPITALCOM:US30",
-"width": "100%",
-"height": "260",
-"locale": "zh_TW",
-"dateRange": "1M",
-"colorTheme": "dark"
+"symbol":"CAPITALCOM:US30",
+"width":"100%",
+"height":"260",
+"locale":"zh_TW",
+"dateRange":"1M",
+"colorTheme":"dark"
 }
+
 </script>
 
 </div>
 
 
+
 <div class="tv-card">
+
 <h3>BTC / USD</h3>
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
+
 {
-"symbol": "BINANCE:BTCUSDT",
-"width": "100%",
-"height": "260",
-"locale": "zh_TW",
-"dateRange": "1M",
-"colorTheme": "dark"
+"symbol":"BINANCE:BTCUSDT",
+"width":"100%",
+"height":"260",
+"locale":"zh_TW",
+"dateRange":"1M",
+"colorTheme":"dark"
 }
+
 </script>
 
 </div>
+
 
 
 <div class="tv-card">
+
 <h3>Gold</h3>
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
+
 {
-"symbol": "TVC:GOLD",
-"width": "100%",
-"height": "260",
-"locale": "zh_TW",
-"dateRange": "1M",
-"colorTheme": "dark"
+"symbol":"TVC:GOLD",
+"width":"100%",
+"height":"260",
+"locale":"zh_TW",
+"dateRange":"1M",
+"colorTheme":"dark"
 }
+
 </script>
 
 </div>
 
 </div>
-    <div class="footer-note">
-      AI Global Market Intelligence Terminal 
-    </div>
+</div>
 
-  </div>
 
-  <script src="https://s3.tradingview.com/tv.js"></script>
+</div>
 
-  <script>
-    function safe(v){
-      if(v === undefined || v === null || v === "") return "N/A";
-      return v;
-    }
 
-    function safeNum(v){
-      const n = Number(v);
-      return Number.isFinite(n) ? n : null;
-    }
 
-    function toDisplay(v){
-      const n = safeNum(v);
-      return n === null ? "N/A" : n.toLocaleString();
-    }
+<script>
 
-    function firstLastChange(history){
-      if(!Array.isArray(history) || history.length < 2) return null;
-      const first = safeNum(history[0]);
-      const last = safeNum(history[history.length - 1]);
-      if(first === null || last === null || first === 0) return null;
-      return ((last - first) / first) * 100;
-    }
+function num(x){
+if(x===undefined||x===null)return "N/A"
+return Number(x).toLocaleString()
+}
 
-    function sentimentClass(change){
-      if(change === null) return "neutral";
-      if(change > 1.5) return "bullish";
-      if(change < -1.5) return "bearish";
-      return "neutral";
-    }
+fetch("data.json")
 
-    function sentimentText(change){
-      if(change === null) return "Neutral";
-      if(change > 1.5) return "Bullish";
-      if(change < -1.5) return "Bearish";
-      return "Neutral";
-    }
+.then(r=>r.json())
 
-    function heatColor(change){
-      if(change === null) return "linear-gradient(135deg, rgba(51,65,85,0.9), rgba(30,41,59,0.9))";
-      if(change >= 0){
-        const opacity = Math.min(0.50, 0.12 + Math.abs(change) / 10);
-        return `linear-gradient(135deg, rgba(34,197,94,${opacity}), rgba(15,23,42,0.95))`;
-      }else{
-        const opacity = Math.min(0.50, 0.12 + Math.abs(change) / 10);
-        return `linear-gradient(135deg, rgba(239,68,68,${opacity}), rgba(15,23,42,0.95))`;
-      }
-    }
+.then(data=>{
 
-    function renderHeatmap(items){
-      const container = document.getElementById("heatmap");
-      container.innerHTML = "";
+document.getElementById("btc").textContent=num(data.BTC)
+document.getElementById("eth").textContent=num(data.ETH)
 
-      items.forEach(item => {
-        const tile = document.createElement("div");
-        tile.className = "heat-tile";
-        tile.style.background = heatColor(item.change);
+document.getElementById("sp500").textContent=num(data.SP500)
+document.getElementById("nasdaq").textContent=num(data.NASDAQ)
+document.getElementById("dow").textContent=num(data.DOW)
 
-        const changeText = item.change === null
-          ? "N/A"
-          : `${item.change >= 0 ? "+" : ""}${item.change.toFixed(2)}%`;
+document.getElementById("taiex").textContent=num(data.TAIEX)
+document.getElementById("tsmc").textContent=num(data.TSMC)
 
-        const changeColor = item.change === null
-          ? "#cbd5e1"
-          : item.change >= 0 ? "#86efac" : "#fca5a5";
+document.getElementById("gold").textContent=num(data.GOLD)
+document.getElementById("oil").textContent=num(data.OIL)
 
-        tile.innerHTML = `
-          <div class="heat-symbol">${item.symbol}</div>
-          <div class="heat-price">${toDisplay(item.price)}</div>
-          <div class="heat-change" style="color:${changeColor}">${changeText}</div>
-        `;
-        container.appendChild(tile);
-      });
-    }
+document.getElementById("usd").textContent=num(data.USDJPY)
 
-    function drawChart(id, labels, data, label){
-      if(!Array.isArray(labels) || !Array.isArray(data) || data.length === 0) return;
 
-      const ctx = document.getElementById(id);
-      if(!ctx) return;
+drawChart("btcChart",data.BTC_labels,data.BTC_history)
+drawChart("spChart",data.SP500_labels,data.SP500_history)
+drawChart("tsmcChart",data.TSMC_labels,data.TSMC_history)
+drawChart("goldChart",data.GOLD_labels,data.GOLD_history)
 
-      new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: labels,
-          datasets: [{
-            label: label,
-            data: data,
-            borderWidth: 2,
-            tension: 0.30,
-            fill: false
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              labels: { color: "white" }
-            }
-          },
-          scales: {
-            x: {
-              ticks: { color: "#cbd5e1" },
-              grid: { color: "rgba(255,255,255,0.06)" }
-            },
-            y: {
-              ticks: { color: "#cbd5e1" },
-              grid: { color: "rgba(255,255,255,0.06)" }
-            }
-          }
-        }
-      });
-    }
 
-    function buildBrief(data){
-      const btcChange = firstLastChange(data.BTC_history);
-      const spChange = firstLastChange(data.SP500_history);
-      const tsmcChange = firstLastChange(data.TSMC_history);
-      const goldChange = firstLastChange(data.GOLD_history);
-      const usdChange = firstLastChange(data.USDJPY_history);
+heatmap(data)
 
-      const lines = [];
-      lines.push("今日市場三件事：");
+})
 
-      if(spChange !== null){
-        lines.push(
-          spChange >= 0
-            ? `1. 美股整體偏強，S&P500 近 30 天約 ${spChange.toFixed(2)}% 變動，風險資產氣氛仍偏正向。`
-            : `1. 美股轉弱，S&P500 近 30 天約 ${spChange.toFixed(2)}% 變動，市場風險偏好下降。`
-        );
-      } else {
-        lines.push("1. 美股資料仍在整理中，建議持續觀察指數方向。");
-      }
 
-      if(btcChange !== null){
-        lines.push(
-          btcChange >= 0
-            ? `2. 比特幣維持強勢，近 30 天約 +${btcChange.toFixed(2)}%，加密市場仍具風險偏好。`
-            : `2. 比特幣偏震盪轉弱，近 30 天約 ${btcChange.toFixed(2)}%，加密市場情緒保守。`
-        );
-      } else {
-        lines.push("2. 加密貨幣資料尚未完整，暫以中性解讀。");
-      }
+function drawChart(id,labels,data){
 
-      if(goldChange !== null && usdChange !== null){
-        let line3 = "3. ";
-        if(goldChange > 0 && usdChange < 0){
-          line3 += `黃金走強、美元偏弱，避險資金需求升溫。`;
-        } else if(goldChange < 0 && usdChange > 0){
-          line3 += `美元偏強、黃金承壓，市場資金較偏美元資產。`;
-        } else {
-          line3 += `黃金與美元呈整理格局，市場正在等待更明確方向。`;
-        }
-        lines.push(line3);
-      } else {
-        lines.push("3. 原物料與外匯訊號尚未完整，先維持中性觀察。");
-      }
+if(!data)return
 
-      lines.push("");
-      lines.push(`台股科技觀察：${tsmcChange === null ? "資料整理中" : (tsmcChange >= 0 ? `台積電近 30 天表現偏強（${tsmcChange.toFixed(2)}%）` : `台積電近 30 天偏弱（${tsmcChange.toFixed(2)}%）`)}`);
-      return lines.join("\n");
-    }
+new Chart(document.getElementById(id),{
 
-    function setSentiment(id, change){
-      const el = document.getElementById(id);
-      const text = sentimentText(change);
-      el.className = "badge " + sentimentClass(change);
-      el.textContent = text;
-    }
+type:"line",
 
-    function averageSentimentScore(changes){
-      const valid = changes.filter(v => v !== null);
-      if(valid.length === 0) return 0;
-      return valid.reduce((a,b)=>a+b,0) / valid.length;
-    }
+data:{
+labels:labels,
+datasets:[{
+data:data,
+borderWidth:2,
+tension:0.3
+}]
+}
 
-    function scoreText(score){
-      if(score > 2) return "偏多";
-      if(score < -2) return "偏空";
-      return "中性";
-    }
+})
 
-    function focusAsset(items){
-      const valid = items.filter(x => x.change !== null);
-      if(valid.length === 0) return "資料整理中";
-      valid.sort((a,b) => Math.abs(b.change) - Math.abs(a.change));
-      return valid[0].symbol;
-    }
+}
 
-    function buildTradingView(containerId, symbol){
-      new TradingView.MiniWidget({
-        "symbol": symbol,
-        "width": "100%",
-        "height": 250,
-        "locale": "zh_TW",
-        "dateRange": "1M",
-        "colorTheme": "dark",
-        "trendLineColor": "rgba(96, 165, 250, 1)",
-        "underLineColor": "rgba(96, 165, 250, 0.15)",
-        "isTransparent": true,
-        "autosize": true,
-        "largeChartUrl": "",
-        "container_id": containerId
-      });
-    }
 
-    fetch("data.json")
-      .then(r => r.json())
-      .then(data => {
-        document.getElementById("date").textContent = "更新：" + safe(data.date);
 
-        document.getElementById("btc").textContent = toDisplay(data.BTC);
-        document.getElementById("eth").textContent = toDisplay(data.ETH);
-        document.getElementById("sp500").textContent = toDisplay(data.SP500);
-        document.getElementById("nasdaq").textContent = toDisplay(data.NASDAQ);
-        document.getElementById("dow").textContent = toDisplay(data.DOW);
-        document.getElementById("taiex").textContent = toDisplay(data.TAIEX);
-        document.getElementById("tsmc").textContent = toDisplay(data.TSMC);
-        document.getElementById("gold").textContent = toDisplay(data.GOLD);
-        document.getElementById("oil").textContent = toDisplay(data.OIL);
-        document.getElementById("usd").textContent = toDisplay(data.USDJPY);
-        document.getElementById("nvda").textContent = toDisplay(data.NVDA);
-        document.getElementById("aapl").textContent = toDisplay(data.AAPL);
-        document.getElementById("msft").textContent = toDisplay(data.MSFT);
-        document.getElementById("mediatek").textContent = toDisplay(data.MEDIATEK);
-        document.getElementById("foxconn").textContent = toDisplay(data.FOXCONN);
-        document.getElementById("sp500f").textContent = toDisplay(data.SP500_F);
-        document.getElementById("nasdaqf").textContent = toDisplay(data.NASDAQ_F);
+function heatmap(data){
 
-        const cryptoChange = firstLastChange(data.BTC_history);
-        const usChange = firstLastChange(data.SP500_history);
-        const twChange = firstLastChange(data.TSMC_history);
-        const goldChange = firstLastChange(data.GOLD_history);
-        const usdChange = firstLastChange(data.USDJPY_history);
+const items=[
 
-        setSentiment("sentCrypto", cryptoChange);
-        setSentiment("sentStocks", usChange);
-        setSentiment("sentTaiwan", twChange);
-        setSentiment("sentGold", goldChange);
-        setSentiment("sentDollar", usdChange);
+["BTC",data.BTC,data.BTC_history],
+["S&P500",data.SP500,data.SP500_history],
+["TSMC",data.TSMC,data.TSMC_history],
+["Gold",data.GOLD,data.GOLD_history]
 
-        const score = averageSentimentScore([cryptoChange, usChange, twChange, goldChange, usdChange]);
-        document.getElementById("marketScore").textContent = scoreText(score);
-        document.getElementById("overallSentiment").textContent = sentimentText(score);
-        
-        const heatItems = [
-          { symbol: "BTC", price: data.BTC, change: firstLastChange(data.BTC_history) },
-          { symbol: "S&P500", price: data.SP500, change: firstLastChange(data.SP500_history) },
-          { symbol: "NASDAQ", price: data.NASDAQ, change: firstLastChange(data.NASDAQ_history) },
-          { symbol: "TSMC", price: data.TSMC, change: firstLastChange(data.TSMC_history) },
-          { symbol: "Gold", price: data.GOLD, change: firstLastChange(data.GOLD_history) },
-          { symbol: "NVDA", price: data.NVDA, change: firstLastChange(data.NVDA_history) },
-          { symbol: "AAPL", price: data.AAPL, change: firstLastChange(data.AAPL_history) },
-          { symbol: "MSFT", price: data.MSFT, change: firstLastChange(data.MSFT_history) }
-        ];
+]
 
-        renderHeatmap(heatItems);
-        document.getElementById("heroFocus").textContent = focusAsset(heatItems);
-        document.getElementById("aiBrief").textContent = buildBrief(data);
+const h=document.getElementById("heatmap")
 
-        drawChart("btcChart", data.BTC_labels, data.BTC_history, "BTC");
-        drawChart("spChart", data.SP500_labels, data.SP500_history, "S&P500");
-        drawChart("tsmcChart", data.TSMC_labels, data.TSMC_history, "TSMC");
-        drawChart("goldChart", data.GOLD_labels, data.GOLD_history, "Gold");
+items.forEach(i=>{
 
-        buildTradingView("tv_spx", "OANDA:SPX500USD");
-        buildTradingView("tv_nasdaq", "CAPITALCOM:US100");
-        buildTradingView("tv_dow", "CAPITALCOM:US30");
-        buildTradingView("tv_btc", "BINANCE:BTCUSDT");
-        buildTradingView("tv_gold", "TVC:GOLD");
-      })
-      .catch(err => {
-        document.getElementById("date").textContent = "資料讀取失敗";
-        console.error(err);
-      });
-  </script>
+let change=0
+
+if(i[2]&&i[2].length>1)
+change=(i[2].slice(-1)[0]-i[2][0])/i[2][0]*100
+
+const box=document.createElement("div")
+
+box.className="heat"
+
+box.style.background=change>0?"#064e3b":"#7f1d1d"
+
+box.innerHTML=`
+<b>${i[0]}</b><br>
+${num(i[1])}<br>
+${change.toFixed(2)}%
+`
+
+h.appendChild(box)
+
+})
+
+}
+
+</script>
+
 </body>
 </html>
