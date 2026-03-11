@@ -1,65 +1,69 @@
-import json
-from datetime import datetime, timezone, timedelta
 import yfinance as yf
+import json
 
-symbols = {
-    "BTC": "BTC-USD",
-    "ETH": "ETH-USD",
+data = {}
 
-    "SP500": "^GSPC",
-    "NASDAQ": "^IXIC",
+def price(symbol):
+    try:
+        t = yf.Ticker(symbol)
+        return float(t.history(period="1d")["Close"].iloc[-1])
+    except:
+        return None
 
-    "TAIEX": "^TWII",
+def history(symbol):
+    try:
+        t = yf.Ticker(symbol)
+        h = t.history(period="30d")
+        return list(h["Close"])
+    except:
+        return []
 
-    "GOLD": "GC=F",
-    "OIL": "CL=F",
+# Crypto
+data["BTC"] = price("BTC-USD")
+data["ETH"] = price("ETH-USD")
 
-    "USDJPY": "JPY=X",
+data["BTC_history"] = history("BTC-USD")
+data["BTC_labels"] = list(range(len(data["BTC_history"])))
 
-    "NVDA": "NVDA",
-    "AAPL": "AAPL",
-    "MSFT": "MSFT",
-    "GOOGL": "GOOGL",
-    "AMZN": "AMZN",
+# US Index
+data["SP500"] = price("^GSPC")
+data["NASDAQ"] = price("^IXIC")
+data["DOW"] = price("^DJI")
 
-    "TSMC": "2330.TW",
-    "MEDIATEK": "2454.TW",
-    "FOXCONN": "2317.TW",
+data["SP500_history"] = history("^GSPC")
+data["SP500_labels"] = list(range(len(data["SP500_history"])))
 
-    "SP500_F": "ES=F",
-    "NASDAQ_F": "NQ=F"
-}
+# Taiwan
+data["TAIEX"] = price("^TWII")
+data["TSMC"] = price("2330.TW")
 
-result = {}
+data["TSMC_history"] = history("2330.TW")
+data["TSMC_labels"] = list(range(len(data["TSMC_history"])))
 
-def get_latest_and_history(symbol):
-    ticker = yf.Ticker(symbol)
-    hist = ticker.history(period="1mo")
+# Commodities
+data["GOLD"] = price("GC=F")
+data["OIL"] = price("CL=F")
 
-    if hist.empty:
-        return "N/A", [], []
+# Forex
+data["USDJPY"] = price("JPY=X")
 
-    close_series = hist["Close"].dropna()
-    if close_series.empty:
-        return "N/A", [], []
+# Magnificent 7
+data["AAPL"] = price("AAPL")
+data["MSFT"] = price("MSFT")
+data["NVDA"] = price("NVDA")
+data["GOOGL"] = price("GOOGL")
+data["AMZN"] = price("AMZN")
+data["META"] = price("META")
+data["TSLA"] = price("TSLA")
 
-    latest_price = round(float(close_series.iloc[-1]), 2)
+# ETF
+data["SPY"] = price("SPY")
+data["QQQ"] = price("QQQ")
+data["DIA"] = price("DIA")
 
-    labels = [d.strftime("%m-%d") for d in close_series.index]
-    values = [round(float(v), 2) for v in close_series.tolist()]
+# Taiwan ETF
+data["0050"] = price("0050.TW")
+data["00878"] = price("00878.TW")
 
-    return latest_price, labels, values
-
-for name, symbol in symbols.items():
-    latest, labels, values = get_latest_and_history(symbol)
-    result[name] = latest
-    result[name + "_labels"] = labels
-    result[name + "_history"] = values
-
-taiwan_time = datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M")
-result["date"] = taiwan_time
-
-with open("data.json", "w", encoding="utf-8") as f:
-    json.dump(result, f, ensure_ascii=False, indent=2)
-
-print("market data with chart history updated")
+with open("data.json","w") as f:
+    json.dump(data,f)
