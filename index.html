@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>AI Global Market Terminal</title>
+<title>AI Market Terminal</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -14,29 +14,24 @@
 
 body{
 margin:0;
-font-family:Arial, Helvetica, sans-serif;
+font-family:Arial;
 background:#050b18;
 color:white;
 padding:30px;
 }
 
 .container{
-max-width:1700px;
+max-width:1600px;
 margin:auto;
 }
 
 h1{
-font-size:42px;
-margin-bottom:6px;
+font-size:40px;
 }
 
 .subtitle{
 color:#9ca3af;
 margin-bottom:30px;
-}
-
-.section{
-margin-top:40px;
 }
 
 .grid{
@@ -47,13 +42,8 @@ gap:20px;
 
 .card{
 background:#111827;
-border-radius:12px;
 padding:20px;
-}
-
-.card h3{
-color:#60a5fa;
-margin-bottom:12px;
+border-radius:10px;
 }
 
 .item{
@@ -65,213 +55,100 @@ border-bottom:1px solid rgba(255,255,255,0.05);
 
 .chart-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
 gap:20px;
+margin-top:30px;
 }
 
 canvas{
-height:260px !important;
-}
-
-.analysis{
-background:#111827;
-padding:20px;
-border-radius:12px;
-line-height:1.8;
-}
-
-.heatmap{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-gap:12px;
-}
-
-.heat{
-padding:16px;
-border-radius:10px;
-text-align:center;
-}
-
-.news{
-background:#111827;
-padding:20px;
-border-radius:12px;
-}
-
-.news-item{
-margin-bottom:10px;
+height:250px !important;
 }
 
 </style>
 
 </head>
 
-
 <body>
 
 <div class="container">
 
-<h1>AI Global Market Terminal</h1>
-<div class="subtitle">Institutional Market Intelligence Platform</div>
-
-
-<!-- GLOBAL MARKET -->
-
-<div class="section">
+<h1>AI Market Terminal</h1>
+<div class="subtitle">AI 全球金融市場觀察平台</div>
 
 <div class="grid">
 
 <div class="card">
-<h3>Crypto</h3>
+
+<h3>加密貨幣</h3>
+
 <div class="item"><span>BTC</span><span id="btc"></span></div>
 <div class="item"><span>ETH</span><span id="eth"></span></div>
+
 </div>
 
 <div class="card">
-<h3>US Index</h3>
+
+<h3>美國指數</h3>
+
 <div class="item"><span>S&P500</span><span id="sp500"></span></div>
 <div class="item"><span>NASDAQ</span><span id="nasdaq"></span></div>
 <div class="item"><span>Dow</span><span id="dow"></span></div>
+
 </div>
 
 <div class="card">
-<h3>Taiwan</h3>
+
+<h3>台灣市場</h3>
+
 <div class="item"><span>TAIEX</span><span id="taiex"></span></div>
-<div class="item"><span>TSMC</span><span id="tsmc"></span></div>
+<div class="item"><span>台積電</span><span id="tsmc"></span></div>
+
 </div>
 
 <div class="card">
-<h3>Commodities</h3>
-<div class="item"><span>Gold</span><span id="gold"></span></div>
-<div class="item"><span>Oil</span><span id="oil"></span></div>
-</div>
+
+<h3>原物料</h3>
+
+<div class="item"><span>黃金</span><span id="gold"></span></div>
+<div class="item"><span>石油</span><span id="oil"></span></div>
 
 </div>
 
 </div>
 
-
-<!-- MACRO -->
-
-<div class="section">
-
-<h2>Macro Indicators</h2>
-
-<div class="grid">
-
-<div class="card">
-
-<div class="item"><span>US 10Y Yield</span><span id="us10y"></span></div>
-<div class="item"><span>US 2Y Yield</span><span id="us2y"></span></div>
-<div class="item"><span>VIX</span><span id="vix"></span></div>
-<div class="item"><span>Dollar Index</span><span id="dxy"></span></div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- MAG7 -->
-
-<div class="section">
-
-<h2>Magnificent 7</h2>
-
-<div class="grid">
-
-<div class="card">
-
-<div class="item"><span>AAPL</span><span id="aapl"></span></div>
-<div class="item"><span>MSFT</span><span id="msft"></span></div>
-<div class="item"><span>NVDA</span><span id="nvda"></span></div>
-<div class="item"><span>GOOGL</span><span id="googl"></span></div>
-<div class="item"><span>AMZN</span><span id="amzn"></span></div>
-<div class="item"><span>META</span><span id="meta"></span></div>
-<div class="item"><span>TSLA</span><span id="tsla"></span></div>
-
-</div>
-
-</div>
-
-</div>
-
-
-
-<!-- HEATMAP -->
-
-<div class="section">
-
-<h2>Market Heatmap</h2>
-
-<div id="heatmap" class="heatmap"></div>
-
-</div>
-
-
-
-<!-- CHARTS -->
-
-<div class="section">
-
-<h2>Market Trends</h2>
+<h2 style="margin-top:40px;">市場趨勢</h2>
 
 <div class="chart-grid">
 
 <div class="card">
+
 <h3>BTC</h3>
 <canvas id="btcChart"></canvas>
+
 </div>
 
 <div class="card">
+
 <h3>S&P500</h3>
 <canvas id="spChart"></canvas>
+
 </div>
 
 <div class="card">
-<h3>NVDA</h3>
-<canvas id="nvdaChart"></canvas>
-</div>
+
+<h3>TSMC</h3>
+<canvas id="tsmcChart"></canvas>
 
 </div>
 
 </div>
 
-
-
-<!-- AI ANALYSIS -->
-
-<div class="section">
-
-<h2>AI Market Analysis</h2>
-
-<div class="analysis" id="analysis"></div>
-
 </div>
-
-
-
-<!-- NEWS -->
-
-<div class="section">
-
-<h2>Market News</h2>
-
-<div class="news" id="news"></div>
-
-</div>
-
-
-
-</div>
-
-
 
 <script>
 
 function num(x){
-if(!x)return "N/A"
+if(!x) return "N/A"
 return Number(x).toLocaleString()
 }
 
@@ -294,29 +171,13 @@ document.getElementById("tsmc").textContent=num(data.TSMC)
 document.getElementById("gold").textContent=num(data.GOLD)
 document.getElementById("oil").textContent=num(data.OIL)
 
-document.getElementById("us10y").textContent=num(data.US10Y)
-document.getElementById("us2y").textContent=num(data.US2Y)
-document.getElementById("vix").textContent=num(data.VIX)
-document.getElementById("dxy").textContent=num(data.DXY)
-
-document.getElementById("nvda").textContent=num(data.NVDA)
-
 drawChart("btcChart",data.BTC_labels,data.BTC_history)
 drawChart("spChart",data.SP500_labels,data.SP500_history)
-drawChart("nvdaChart",data.NVDA_labels,data.NVDA_history)
-
-heatmap(data)
-
-analysis(data)
-
-news()
+drawChart("tsmcChart",data.TSMC_labels,data.TSMC_history)
 
 })
 
-
 function drawChart(id,labels,data){
-
-if(!data)return
 
 new Chart(document.getElementById(id),{
 
@@ -324,96 +185,18 @@ type:"line",
 
 data:{
 labels:labels,
-datasets:[{data:data,borderWidth:2,tension:0.3}]
+datasets:[{
+label:"價格",
+data:data,
+borderWidth:2
+}]
 }
-
-})
-
-}
-
-
-function heatmap(data){
-
-const list=[
-["BTC",data.BTC,data.BTC_history],
-["S&P500",data.SP500,data.SP500_history],
-["NVDA",data.NVDA,data.NVDA_history]
-]
-
-const h=document.getElementById("heatmap")
-
-list.forEach(i=>{
-
-let change=0
-
-if(i[2]&&i[2].length>1)
-change=(i[2].slice(-1)[0]-i[2][0])/i[2][0]*100
-
-const box=document.createElement("div")
-
-box.className="heat"
-
-box.style.background=change>0?"#064e3b":"#7f1d1d"
-
-box.innerHTML=`<b>${i[0]}</b><br>${num(i[1])}<br>${change.toFixed(2)}%`
-
-h.appendChild(box)
-
-})
-
-}
-
-
-function analysis(data){
-
-let text=""
-
-if(data.SP500 > data.SP500_history[0])
-text+="US equities trend bullish.\n"
-
-if(data.NVDA > data.NVDA_history[0])
-text+="AI sector momentum remains strong.\n"
-
-if(data.VIX > 20)
-text+="Market volatility elevated.\n"
-
-document.getElementById("analysis").innerText=text
-
-}
-
-
-function news(){
-
-const headlines=[
-
-"Fed policy outlook influences global equities",
-
-"AI sector continues driving Nasdaq performance",
-
-"Gold demand increases amid geopolitical tensions",
-
-"Bitcoin market volatility returns"
-
-]
-
-const box=document.getElementById("news")
-
-headlines.forEach(n=>{
-
-const div=document.createElement("div")
-
-div.className="news-item"
-
-div.textContent=n
-
-box.appendChild(div)
 
 })
 
 }
 
 </script>
-
 
 </body>
 </html>
