@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -19,7 +21,7 @@ padding:30px;
 }
 
 h1{
-font-size:42px;
+font-size:40px;
 margin-bottom:6px;
 }
 
@@ -34,12 +36,11 @@ margin-bottom:25px;
 }
 
 .section{
-margin-top:35px;
+margin-top:40px;
 }
 
 .section h2{
-margin-bottom:16px;
-color:#e5e7eb;
+margin-bottom:18px;
 }
 
 .grid{
@@ -98,7 +99,9 @@ color:#facc15;
 }
 
 </style>
+
 </head>
+
 
 <body>
 
@@ -165,17 +168,45 @@ color:#facc15;
 </div>
 
 
-
 <div class="section">
 
-<h2>市場圖表</h2>
-  <div class="section">
+<h2>30 天市場走勢</h2>
+
+<div class="chart-grid">
+
+<div class="chart-card">
+<h3>BTC</h3>
+<canvas id="btcChart"></canvas>
+</div>
+
+<div class="chart-card">
+<h3>S&P500</h3>
+<canvas id="spChart"></canvas>
+</div>
+
+<div class="chart-card">
+<h3>TSMC</h3>
+<canvas id="tsmcChart"></canvas>
+</div>
+
+<div class="chart-card">
+<h3>Gold</h3>
+<canvas id="goldChart"></canvas>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="section">
 
 <h2>專業技術圖表</h2>
 
 <div class="chart-grid">
 
 <div class="chart-card">
+
 <h3>BTC / USD</h3>
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
@@ -216,7 +247,7 @@ color:#facc15;
 
 <div class="chart-card">
 
-<h3>台積電</h3>
+<h3>TSMC</h3>
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
 
@@ -257,56 +288,24 @@ color:#facc15;
 
 </div>
 
-<div class="chart-grid">
-
-<div class="chart-card">
-<h3>BTC 30日</h3>
-<canvas id="btcChart"></canvas>
-</div>
-
-<div class="chart-card">
-<h3>S&P500 30日</h3>
-<canvas id="spChart"></canvas>
-</div>
-
-<div class="chart-card">
-<h3>台積電 30日</h3>
-<canvas id="tsmcChart"></canvas>
-</div>
-
-<div class="chart-card">
-<h3>黃金 30日</h3>
-<canvas id="goldChart"></canvas>
-</div>
-
-</div>
-
-</div>
-
-
 
 <div class="brief">
 
 <h2>AI 市場摘要</h2>
 
-<p>
+<p id="aiBrief">
 
-本系統為 AI 自動市場監控儀表板。
+美股科技股維持強勢，
+S&P500 接近歷史高點。
 
-整合：
+比特幣高位震盪，
+市場風險偏好仍高。
 
-全球股市  
-加密貨幣  
-原物料  
-外匯  
-期貨  
+美元近期回落，
+黃金維持避險需求。
 
-未來將加入：
-
-AI 市場分析  
-市場情緒  
-財經新聞  
-交易訊號  
+整體市場情緒：
+偏多。
 
 </p>
 
@@ -316,7 +315,14 @@ AI 市場分析
 
 <script>
 
+function safe(v){
+if(v===undefined||v===null||v===""){return "N/A"}
+return v
+}
+
 function drawChart(id,labels,data,label){
+
+if(!labels||!data){return}
 
 new Chart(document.getElementById(id),{
 
@@ -333,15 +339,11 @@ tension:0.3
 },
 
 options:{
-plugins:{
-legend:{labels:{color:"white"}}
-},
-
+plugins:{legend:{labels:{color:"white"}}},
 scales:{
 x:{ticks:{color:"#cbd5e1"}},
 y:{ticks:{color:"#cbd5e1"}}
 }
-
 }
 
 })
@@ -355,36 +357,35 @@ fetch("data.json")
 
 .then(data=>{
 
-document.getElementById("date").innerText="更新："+data.date
+document.getElementById("date").innerText="更新："+safe(data.date)
 
-document.getElementById("btc").innerText="BTC : "+data.BTC
-document.getElementById("eth").innerText="ETH : "+data.ETH
+document.getElementById("btc").innerText="BTC : "+safe(data.BTC)
+document.getElementById("eth").innerText="ETH : "+safe(data.ETH)
 
-document.getElementById("sp500").innerText="S&P500 : "+data.SP500
-document.getElementById("nasdaq").innerText="NASDAQ : "+data.NASDAQ
+document.getElementById("sp500").innerText="S&P500 : "+safe(data.SP500)
+document.getElementById("nasdaq").innerText="NASDAQ : "+safe(data.NASDAQ)
 
-document.getElementById("taiex").innerText="TAIEX : "+data.TAIEX
-document.getElementById("tsmc").innerText="TSMC : "+data.TSMC
+document.getElementById("taiex").innerText="TAIEX : "+safe(data.TAIEX)
+document.getElementById("tsmc").innerText="TSMC : "+safe(data.TSMC)
 
-document.getElementById("gold").innerText="Gold : "+data.GOLD
-document.getElementById("oil").innerText="Oil : "+data.OIL
+document.getElementById("gold").innerText="Gold : "+safe(data.GOLD)
+document.getElementById("oil").innerText="Oil : "+safe(data.OIL)
 
-document.getElementById("usd").innerText="USDJPY : "+data.USDJPY
+document.getElementById("usd").innerText="USDJPY : "+safe(data.USDJPY)
 
-document.getElementById("nvda").innerText="NVDA : "+data.NVDA
-document.getElementById("aapl").innerText="AAPL : "+data.AAPL
-document.getElementById("msft").innerText="MSFT : "+data.MSFT
+document.getElementById("nvda").innerText="NVDA : "+safe(data.NVDA)
+document.getElementById("aapl").innerText="AAPL : "+safe(data.AAPL)
+document.getElementById("msft").innerText="MSFT : "+safe(data.MSFT)
 
-document.getElementById("mediatek").innerText="聯發科 : "+data.MEDIATEK
-document.getElementById("foxconn").innerText="鴻海 : "+data.FOXCONN
+document.getElementById("mediatek").innerText="聯發科 : "+safe(data.MEDIATEK)
+document.getElementById("foxconn").innerText="鴻海 : "+safe(data.FOXCONN)
 
-document.getElementById("sp500f").innerText="SP500 Futures : "+data.SP500_F
-document.getElementById("nasdaqf").innerText="NASDAQ Futures : "+data.NASDAQ_F
-
+document.getElementById("sp500f").innerText="SP500 Futures : "+safe(data.SP500_F)
+document.getElementById("nasdaqf").innerText="NASDAQ Futures : "+safe(data.NASDAQ_F)
 
 drawChart("btcChart",data.BTC_labels,data.BTC_history,"BTC")
 
-drawChart("spChart",data.SP500_labels,data.SP500_history,"S&P500")
+drawChart("spChart",data.SP500_labels,data.SP500_history,"SP500")
 
 drawChart("tsmcChart",data.TSMC_labels,data.TSMC_history,"TSMC")
 
