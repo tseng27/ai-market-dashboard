@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
+
 <meta charset="UTF-8">
-<title>AI Market Intelligence Platform</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Global Market Intelligence</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -18,12 +21,12 @@ padding:30px;
 }
 
 .container{
-max-width:1600px;
+max-width:1700px;
 margin:auto;
 }
 
 h1{
-font-size:40px;
+font-size:42px;
 margin-bottom:6px;
 }
 
@@ -66,25 +69,16 @@ grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
 gap:20px;
 }
 
-.tv-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(380px,1fr));
-gap:20px;
-}
-
-canvas{
-height:260px !important;
-}
-
 .heatmap{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
 gap:12px;
 }
 
 .heat{
 padding:16px;
 border-radius:10px;
+text-align:center;
 }
 
 .analysis{
@@ -94,58 +88,83 @@ border-radius:12px;
 line-height:1.8;
 }
 
+canvas{
+height:260px !important;
+}
+
 </style>
 
 </head>
+
 
 
 <body>
 
 <div class="container">
 
-<h1>AI Market Intelligence Platform</h1>
-<div class="subtitle">Global Markets • ETF • Magnificent 7 • AI Analysis</div>
+<h1>AI Global Market Intelligence</h1>
+<div class="subtitle">Professional AI Investment Research Terminal</div>
 
 
-<!-- 全球市場 -->
+<!-- GLOBAL MARKET -->
 
 <div class="section">
 
 <div class="grid">
 
 <div class="card">
+
 <h3>Crypto</h3>
+
 <div class="item"><span>BTC</span><span id="btc"></span></div>
 <div class="item"><span>ETH</span><span id="eth"></span></div>
+
 </div>
 
+
 <div class="card">
+
 <h3>US Index</h3>
+
 <div class="item"><span>S&P500</span><span id="sp500"></span></div>
 <div class="item"><span>NASDAQ</span><span id="nasdaq"></span></div>
 <div class="item"><span>Dow</span><span id="dow"></span></div>
+
 </div>
 
+
 <div class="card">
+
 <h3>Taiwan Market</h3>
+
 <div class="item"><span>TAIEX</span><span id="taiex"></span></div>
 <div class="item"><span>TSMC</span><span id="tsmc"></span></div>
+
 </div>
 
+
 <div class="card">
+
 <h3>Commodities</h3>
+
 <div class="item"><span>Gold</span><span id="gold"></span></div>
 <div class="item"><span>Oil</span><span id="oil"></span></div>
+
 </div>
+
 
 <div class="card">
+
 <h3>Forex</h3>
+
 <div class="item"><span>USDJPY</span><span id="usd"></span></div>
-</div>
 
 </div>
 
 </div>
+
+</div>
+
 
 
 <!-- ETF -->
@@ -157,28 +176,36 @@ line-height:1.8;
 <div class="grid">
 
 <div class="card">
+
 <h3>US ETF</h3>
+
 <div class="item"><span>SPY</span><span id="spy"></span></div>
 <div class="item"><span>QQQ</span><span id="qqq"></span></div>
 <div class="item"><span>DIA</span><span id="dia"></span></div>
 <div class="item"><span>VTI</span><span id="vti"></span></div>
 <div class="item"><span>ARKK</span><span id="arkk"></span></div>
+
 </div>
 
+
 <div class="card">
+
 <h3>Taiwan ETF</h3>
+
 <div class="item"><span>0050</span><span id="etf0050"></span></div>
 <div class="item"><span>0056</span><span id="etf0056"></span></div>
 <div class="item"><span>00878</span><span id="etf00878"></span></div>
 <div class="item"><span>00919</span><span id="etf00919"></span></div>
-</div>
 
 </div>
 
 </div>
 
+</div>
 
-<!-- 美股七巨頭 -->
+
+
+<!-- MAG7 -->
 
 <div class="section">
 
@@ -187,7 +214,6 @@ line-height:1.8;
 <div class="grid">
 
 <div class="card">
-<h3>US Tech Giants</h3>
 
 <div class="item"><span>AAPL</span><span id="aapl"></span></div>
 <div class="item"><span>MSFT</span><span id="msft"></span></div>
@@ -204,7 +230,8 @@ line-height:1.8;
 </div>
 
 
-<!-- Heatmap -->
+
+<!-- HEATMAP -->
 
 <div class="section">
 
@@ -215,32 +242,57 @@ line-height:1.8;
 </div>
 
 
-<!-- 趨勢圖 -->
+
+<!-- FEAR GREED -->
 
 <div class="section">
 
-<h2>30 Day Trends</h2>
+<h2>Market Sentiment</h2>
+
+<div class="analysis" id="sentiment"></div>
+
+</div>
+
+
+
+<!-- CHARTS -->
+
+<div class="section">
+
+<h2>Market Trends</h2>
 
 <div class="chart-grid">
 
 <div class="card">
+
 <h3>BTC</h3>
+
 <canvas id="btcChart"></canvas>
+
 </div>
 
 <div class="card">
+
 <h3>S&P500</h3>
+
 <canvas id="spChart"></canvas>
+
 </div>
 
 <div class="card">
-<h3>TSMC</h3>
-<canvas id="tsmcChart"></canvas>
-</div>
 
-<div class="card">
 <h3>NVDA</h3>
+
 <canvas id="nvdaChart"></canvas>
+
+</div>
+
+<div class="card">
+
+<h3>TSMC</h3>
+
+<canvas id="tsmcChart"></canvas>
+
 </div>
 
 </div>
@@ -248,17 +300,14 @@ line-height:1.8;
 </div>
 
 
-<!-- AI 投資分析 -->
+
+<!-- AI ANALYSIS -->
 
 <div class="section">
 
-<h2>AI Market Analysis</h2>
+<h2>AI Investment Analysis</h2>
 
-<div id="analysis" class="analysis">
-
-AI is analysing global markets...
-
-</div>
+<div class="analysis" id="analysis"></div>
 
 </div>
 
@@ -299,24 +348,23 @@ document.getElementById("spy").textContent=num(data.SPY)
 document.getElementById("qqq").textContent=num(data.QQQ)
 
 document.getElementById("etf0050").textContent=num(data.ETF0050)
-document.getElementById("etf0056").textContent=num(data.ETF0056)
 
 document.getElementById("aapl").textContent=num(data.AAPL)
-document.getElementById("msft").textContent=num(data.MSFT)
 document.getElementById("nvda").textContent=num(data.NVDA)
-document.getElementById("googl").textContent=num(data.GOOGL)
-document.getElementById("amzn").textContent=num(data.AMZN)
-document.getElementById("meta").textContent=num(data.META)
-document.getElementById("tsla").textContent=num(data.TSLA)
 
 drawChart("btcChart",data.BTC_labels,data.BTC_history)
+
 drawChart("spChart",data.SP500_labels,data.SP500_history)
-drawChart("tsmcChart",data.TSMC_labels,data.TSMC_history)
+
 drawChart("nvdaChart",data.NVDA_labels,data.NVDA_history)
+
+drawChart("tsmcChart",data.TSMC_labels,data.TSMC_history)
 
 heatmap(data)
 
 aiAnalysis(data)
+
+sentiment(data)
 
 })
 
@@ -331,11 +379,7 @@ type:"line",
 
 data:{
 labels:labels,
-datasets:[{
-data:data,
-borderWidth:2,
-tension:0.3
-}]
+datasets:[{data:data,borderWidth:2,tension:0.3}]
 }
 
 })
@@ -343,23 +387,24 @@ tension:0.3
 }
 
 
+
 function heatmap(data){
 
-const assets=[
+const list=[
 ["BTC",data.BTC,data.BTC_history],
 ["S&P500",data.SP500,data.SP500_history],
-["TSMC",data.TSMC,data.TSMC_history],
-["NVDA",data.NVDA,data.NVDA_history]
+["NVDA",data.NVDA,data.NVDA_history],
+["TSMC",data.TSMC,data.TSMC_history]
 ]
 
 const h=document.getElementById("heatmap")
 
-assets.forEach(a=>{
+list.forEach(i=>{
 
 let change=0
 
-if(a[2] && a[2].length>1)
-change=(a[2].slice(-1)[0]-a[2][0])/a[2][0]*100
+if(i[2]&&i[2].length>1)
+change=(i[2].slice(-1)[0]-i[2][0])/i[2][0]*100
 
 const box=document.createElement("div")
 
@@ -367,7 +412,7 @@ box.className="heat"
 
 box.style.background=change>0?"#064e3b":"#7f1d1d"
 
-box.innerHTML=`<b>${a[0]}</b><br>${num(a[1])}<br>${change.toFixed(2)}%`
+box.innerHTML=`<b>${i[0]}</b><br>${num(i[1])}<br>${change.toFixed(2)}%`
 
 h.appendChild(box)
 
@@ -381,18 +426,33 @@ function aiAnalysis(data){
 let text=""
 
 if(data.SP500 > data.SP500_history[0])
-text+="US market trend remains bullish.\n"
+text+="US equity trend remains bullish.\n"
 
 if(data.NVDA > data.NVDA_history[0])
 text+="AI sector momentum remains strong.\n"
 
-if(data.GOLD > data.GOLD_history[0])
-text+="Gold demand indicates rising risk hedging.\n"
-
 if(data.BTC > data.BTC_history[0])
-text+="Crypto market sentiment remains positive.\n"
+text+="Crypto market sentiment improving.\n"
 
 document.getElementById("analysis").innerText=text
+
+}
+
+
+function sentiment(data){
+
+let score=0
+
+if(data.SP500 > data.SP500_history[0])score++
+if(data.NVDA > data.NVDA_history[0])score++
+if(data.BTC > data.BTC_history[0])score++
+
+let text=""
+
+if(score>=2) text="Market sentiment: Greed (Risk-on)"
+else text="Market sentiment: Neutral"
+
+document.getElementById("sentiment").innerText=text
 
 }
 
