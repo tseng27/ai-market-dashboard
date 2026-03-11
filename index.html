@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<title>AI Global Market Terminal</title>
+<title>AI Global Market Intelligence</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -23,8 +23,8 @@ margin:auto;
 }
 
 h1{
-font-size:42px;
-margin-bottom:10px;
+font-size:40px;
+margin-bottom:6px;
 }
 
 .subtitle{
@@ -44,7 +44,7 @@ gap:20px;
 
 .card{
 background:#111827;
-border-radius:14px;
+border-radius:12px;
 padding:20px;
 }
 
@@ -64,9 +64,31 @@ border-bottom:1px solid rgba(255,255,255,0.05);
 font-weight:bold;
 }
 
+.chart-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+gap:20px;
+}
+
+.tv-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(380px,1fr));
+gap:20px;
+}
+
+.news{
+background:#111827;
+padding:20px;
+border-radius:12px;
+}
+
+.news-item{
+margin-bottom:10px;
+}
+
 .heatmap{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
 gap:12px;
 }
 
@@ -75,39 +97,12 @@ padding:16px;
 border-radius:10px;
 }
 
-.chart-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
-gap:20px;
-}
-
-.tv-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(400px,1fr));
-gap:20px;
-}
-
-.tv-card{
-background:#111827;
-padding:20px;
-border-radius:14px;
-}
-
 canvas{
 height:260px !important;
 }
 
-.badge{
-padding:4px 8px;
-border-radius:6px;
-font-size:12px;
-}
-
-.bull{background:#064e3b;color:#34d399}
-.bear{background:#7f1d1d;color:#f87171}
-.neutral{background:#374151;color:#e5e7eb}
-
 </style>
+
 </head>
 
 
@@ -115,8 +110,9 @@ font-size:12px;
 
 <div class="container">
 
-<h1>AI Global Market Terminal</h1>
-<div class="subtitle">Global Market Intelligence Dashboard</div>
+<h1>AI Global Market Intelligence</h1>
+<div class="subtitle">Professional Market Dashboard</div>
+
 
 
 <div class="section">
@@ -138,19 +134,19 @@ font-size:12px;
 
 <div class="card">
 <h3>Taiwan</h3>
-<div class="item"><span>TAIEX</span><span id="taiex" class="value"></span></div>
-<div class="item"><span>TSMC</span><span id="tsmc" class="value"></span></div>
+<div class="item"><span>TAIEX</span><span id="taiex"></span></div>
+<div class="item"><span>TSMC</span><span id="tsmc"></span></div>
 </div>
 
 <div class="card">
 <h3>Commodities</h3>
-<div class="item"><span>Gold</span><span id="gold" class="value"></span></div>
-<div class="item"><span>Oil</span><span id="oil" class="value"></span></div>
+<div class="item"><span>Gold</span><span id="gold"></span></div>
+<div class="item"><span>Oil</span><span id="oil"></span></div>
 </div>
 
 <div class="card">
 <h3>Forex</h3>
-<div class="item"><span>USDJPY</span><span id="usd" class="value"></span></div>
+<div class="item"><span>USDJPY</span><span id="usd"></span></div>
 </div>
 
 </div>
@@ -158,13 +154,18 @@ font-size:12px;
 
 
 <div class="section">
+
 <h2>Market Heatmap</h2>
+
 <div id="heatmap" class="heatmap"></div>
+
 </div>
 
 
+
 <div class="section">
-<h2>30 Day Trends</h2>
+
+<h2>30 Day Market Trends</h2>
 
 <div class="chart-grid">
 
@@ -189,21 +190,23 @@ font-size:12px;
 </div>
 
 </div>
+
 </div>
+
 
 
 <div class="section">
 
-<h2>Global Technical Charts</h2>
+<h2>Technical Charts</h2>
 
 <div class="tv-grid">
 
-<div class="tv-card">
+
+<div class="card">
 
 <h3>S&P500</h3>
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
-
 {
 "symbol":"OANDA:SPX500USD",
 "width":"100%",
@@ -212,19 +215,16 @@ font-size:12px;
 "dateRange":"1M",
 "colorTheme":"dark"
 }
-
 </script>
 
 </div>
 
 
-
-<div class="tv-card">
+<div class="card">
 
 <h3>NASDAQ</h3>
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
-
 {
 "symbol":"CAPITALCOM:US100",
 "width":"100%",
@@ -233,19 +233,17 @@ font-size:12px;
 "dateRange":"1M",
 "colorTheme":"dark"
 }
-
 </script>
 
 </div>
 
 
 
-<div class="tv-card">
+<div class="card">
 
 <h3>Dow Jones</h3>
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
-
 {
 "symbol":"CAPITALCOM:US30",
 "width":"100%",
@@ -254,19 +252,17 @@ font-size:12px;
 "dateRange":"1M",
 "colorTheme":"dark"
 }
-
 </script>
 
 </div>
 
 
 
-<div class="tv-card">
+<div class="card">
 
-<h3>BTC / USD</h3>
+<h3>BTC</h3>
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
-
 {
 "symbol":"BINANCE:BTCUSDT",
 "width":"100%",
@@ -275,19 +271,17 @@ font-size:12px;
 "dateRange":"1M",
 "colorTheme":"dark"
 }
-
 </script>
 
 </div>
 
 
 
-<div class="tv-card">
+<div class="card">
 
 <h3>Gold</h3>
 
 <script src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js">
-
 {
 "symbol":"TVC:GOLD",
 "width":"100%",
@@ -296,13 +290,24 @@ font-size:12px;
 "dateRange":"1M",
 "colorTheme":"dark"
 }
-
 </script>
 
 </div>
 
 </div>
+
 </div>
+
+
+
+<div class="section">
+
+<h2>Market News</h2>
+
+<div class="news" id="news"></div>
+
+</div>
+
 
 
 </div>
@@ -312,9 +317,10 @@ font-size:12px;
 <script>
 
 function num(x){
-if(x===undefined||x===null)return "N/A"
+if(!x)return "N/A"
 return Number(x).toLocaleString()
 }
+
 
 fetch("data.json")
 
@@ -337,12 +343,10 @@ document.getElementById("oil").textContent=num(data.OIL)
 
 document.getElementById("usd").textContent=num(data.USDJPY)
 
-
 drawChart("btcChart",data.BTC_labels,data.BTC_history)
 drawChart("spChart",data.SP500_labels,data.SP500_history)
 drawChart("tsmcChart",data.TSMC_labels,data.TSMC_history)
 drawChart("goldChart",data.GOLD_labels,data.GOLD_history)
-
 
 heatmap(data)
 
@@ -374,7 +378,7 @@ tension:0.3
 
 function heatmap(data){
 
-const items=[
+const list=[
 
 ["BTC",data.BTC,data.BTC_history],
 ["S&P500",data.SP500,data.SP500_history],
@@ -385,7 +389,7 @@ const items=[
 
 const h=document.getElementById("heatmap")
 
-items.forEach(i=>{
+list.forEach(i=>{
 
 let change=0
 
@@ -398,17 +402,41 @@ box.className="heat"
 
 box.style.background=change>0?"#064e3b":"#7f1d1d"
 
-box.innerHTML=`
-<b>${i[0]}</b><br>
-${num(i[1])}<br>
-${change.toFixed(2)}%
-`
+box.innerHTML=`<b>${i[0]}</b><br>${num(i[1])}<br>${change.toFixed(2)}%`
 
 h.appendChild(box)
 
 })
 
 }
+
+
+
+const news=[
+
+"Fed policy outlook moves global markets",
+
+"AI stocks continue leading US tech rally",
+
+"Gold demand rises amid geopolitical risk",
+
+"Bitcoin volatility returns to crypto market"
+
+]
+
+const newsBox=document.getElementById("news")
+
+news.forEach(n=>{
+
+const div=document.createElement("div")
+
+div.className="news-item"
+
+div.textContent=n
+
+newsBox.appendChild(div)
+
+})
 
 </script>
 
