@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Global Market Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Global Market Dashboard Pro</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     body {
       margin: 0;
       font-family: Arial, "Microsoft JhengHei", sans-serif;
-      background: #0f172a;
+      background: linear-gradient(180deg, #071224 0%, #0f172a 100%);
       color: white;
-      padding: 40px;
+      padding: 32px;
     }
 
     h1 {
@@ -22,33 +23,41 @@
 
     .subtitle {
       color: #94a3b8;
-      margin-bottom: 40px;
       font-size: 18px;
+      margin-bottom: 12px;
     }
 
     .date {
       color: #facc15;
-      margin-bottom: 30px;
       font-size: 16px;
+      margin-bottom: 28px;
+    }
+
+    .section-title {
+      font-size: 24px;
+      margin-top: 42px;
+      margin-bottom: 18px;
+      color: #e2e8f0;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 20px;
     }
 
     .card {
-      background: #1e293b;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      background: rgba(30, 41, 59, 0.95);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
     }
 
     .card h2 {
       margin-top: 0;
+      margin-bottom: 14px;
       font-size: 20px;
-      color: #93c5fd;
+      color: #7dd3fc;
     }
 
     .item {
@@ -61,12 +70,37 @@
       border-bottom: none;
     }
 
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 20px;
+    }
+
+    .chart-card {
+      background: rgba(17, 24, 39, 0.95);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    .chart-card h3 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      color: #f8fafc;
+      font-size: 20px;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: 260px !important;
+    }
+
     .brief {
       margin-top: 40px;
-      background: #111827;
-      border-radius: 16px;
-      padding: 25px;
-      line-height: 1.8;
+      background: rgba(17, 24, 39, 0.95);
+      border-radius: 18px;
+      padding: 24px;
+      line-height: 1.9;
     }
 
     .brief h2 {
@@ -75,12 +109,13 @@
     }
   </style>
 </head>
-
 <body>
 
   <h1>AI 全球市場觀察站</h1>
-  <div class="subtitle">曾老師的 AI 全球市場監控儀表板</div>
+  <div class="subtitle">曾老師的專業財經儀表板｜市場監控 + 圖表分析</div>
   <div class="date" id="update-date">資料更新中...</div>
+
+  <div class="section-title">市場總覽</div>
 
   <div class="grid">
     <div class="card">
@@ -98,6 +133,7 @@
     <div class="card">
       <h2>台灣市場</h2>
       <div class="item" id="taiex">TAIEX：讀取中...</div>
+      <div class="item" id="tsmc">台積電：讀取中...</div>
     </div>
 
     <div class="card">
@@ -110,29 +146,149 @@
       <h2>外匯</h2>
       <div class="item" id="usdjpy">USDJPY：讀取中...</div>
     </div>
+
+    <div class="card">
+      <h2>美股科技股</h2>
+      <div class="item" id="nvda">NVDA：讀取中...</div>
+      <div class="item" id="aapl">AAPL：讀取中...</div>
+      <div class="item" id="msft">MSFT：讀取中...</div>
+    </div>
+
+    <div class="card">
+      <h2>台股科技股</h2>
+      <div class="item" id="mediatek">聯發科：讀取中...</div>
+      <div class="item" id="foxconn">鴻海：讀取中...</div>
+    </div>
+
+    <div class="card">
+      <h2>期貨市場</h2>
+      <div class="item" id="sp500f">S&P500 Futures：讀取中...</div>
+      <div class="item" id="nasdaqf">NASDAQ Futures：讀取中...</div>
+    </div>
+  </div>
+
+  <div class="section-title">30 天走勢圖</div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>BTC 近 30 天走勢</h3>
+      <canvas id="btcChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3>S&P500 近 30 天走勢</h3>
+      <canvas id="sp500Chart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3>台積電 近 30 天走勢</h3>
+      <canvas id="tsmcChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3>黃金 近 30 天走勢</h3>
+      <canvas id="goldChart"></canvas>
+    </div>
   </div>
 
   <div class="brief">
     <h2>AI 每日市場摘要</h2>
     <p>
-      目前先完成「自動市場數據」版本。<br>
-      下一步再升級成：新聞 + AI 摘要 + 市場判讀。
+      目前已升級為圖表版專業財經網站。<br>
+      現在可以同時查看：
+    </p>
+    <ul>
+      <li>全球市場主要價格</li>
+      <li>美股科技股與台股科技股</li>
+      <li>原物料、外匯、期貨</li>
+      <li>30 天走勢圖</li>
+    </ul>
+    <p>
+      下一步可以再升級成：<br>
+      AI 每日市場摘要 + 財經新聞整理 + 多空方向判讀。
     </p>
   </div>
 
   <script>
+    function createLineChart(canvasId, labels, values, labelText) {
+      const ctx = document.getElementById(canvasId).getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: labelText,
+            data: values,
+            borderWidth: 2,
+            tension: 0.25,
+            fill: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: 'white'
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: '#cbd5e1'
+              },
+              grid: {
+                color: 'rgba(255,255,255,0.06)'
+              }
+            },
+            y: {
+              ticks: {
+                color: '#cbd5e1'
+              },
+              grid: {
+                color: 'rgba(255,255,255,0.06)'
+              }
+            }
+          }
+        }
+      });
+    }
+
     fetch("data.json")
       .then(response => response.json())
       .then(data => {
         document.getElementById("update-date").innerText = "最新更新：" + data.date;
+
         document.getElementById("btc").innerText = "BTC：" + data.BTC;
         document.getElementById("eth").innerText = "ETH：" + data.ETH;
+
         document.getElementById("sp500").innerText = "S&P500：" + data.SP500;
         document.getElementById("nasdaq").innerText = "NASDAQ：" + data.NASDAQ;
+
         document.getElementById("taiex").innerText = "TAIEX：" + data.TAIEX;
+        document.getElementById("tsmc").innerText = "台積電：" + data.TSMC;
+
         document.getElementById("gold").innerText = "Gold：" + data.GOLD;
         document.getElementById("oil").innerText = "Oil：" + data.OIL;
+
         document.getElementById("usdjpy").innerText = "USDJPY：" + data.USDJPY;
+
+        document.getElementById("nvda").innerText = "NVDA：" + data.NVDA;
+        document.getElementById("aapl").innerText = "AAPL：" + data.AAPL;
+        document.getElementById("msft").innerText = "MSFT：" + data.MSFT;
+
+        document.getElementById("mediatek").innerText = "聯發科：" + data.MEDIATEK;
+        document.getElementById("foxconn").innerText = "鴻海：" + data.FOXCONN;
+
+        document.getElementById("sp500f").innerText = "S&P500 Futures：" + data.SP500_F;
+        document.getElementById("nasdaqf").innerText = "NASDAQ Futures：" + data.NASDAQ_F;
+
+        createLineChart("btcChart", data.BTC_labels, data.BTC_history, "BTC");
+        createLineChart("sp500Chart", data.SP500_labels, data.SP500_history, "S&P500");
+        createLineChart("tsmcChart", data.TSMC_labels, data.TSMC_history, "TSMC");
+        createLineChart("goldChart", data.GOLD_labels, data.GOLD_history, "Gold");
       })
       .catch(error => {
         document.getElementById("update-date").innerText = "資料讀取失敗";
