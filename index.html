@@ -1,115 +1,151 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Global Market Dashboard</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, "Microsoft JhengHei", sans-serif;
-      background: #0f172a;
-      color: white;
-      padding: 30px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    h1 {
-      margin-top: 0;
-      font-size: 42px;
-    }
+<title>AI Global Market Dashboard</title>
 
-    .subtitle {
-      color: #cbd5e1;
-      margin-bottom: 30px;
-      font-size: 18px;
-    }
+<style>
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-    }
+body{
+margin:0;
+font-family: Arial,"Microsoft JhengHei",sans-serif;
+background:#0f172a;
+color:white;
+padding:40px;
+}
 
-    .card {
-      background: #1e293b;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-    }
+h1{
+font-size:42px;
+margin-bottom:10px;
+}
 
-    .card h2 {
-      margin-top: 0;
-      font-size: 20px;
-      color: #93c5fd;
-    }
+.subtitle{
+color:#94a3b8;
+margin-bottom:40px;
+font-size:18px;
+}
 
-    .item {
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      font-size: 18px;
-    }
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
 
-    .item:last-child {
-      border-bottom: none;
-    }
+.card{
+background:#1e293b;
+border-radius:16px;
+padding:20px;
+box-shadow:0 8px 20px rgba(0,0,0,0.3);
+}
 
-    .brief {
-      margin-top: 30px;
-      background: #111827;
-      border-radius: 16px;
-      padding: 20px;
-      line-height: 1.8;
-    }
+.card h2{
+margin-top:0;
+font-size:20px;
+color:#93c5fd;
+}
 
-    .brief h2 {
-      margin-top: 0;
-      color: #facc15;
-    }
-  </style>
+.item{
+padding:10px 0;
+border-bottom:1px solid rgba(255,255,255,0.08);
+font-size:18px;
+}
+
+.item:last-child{
+border-bottom:none;
+}
+
+.brief{
+margin-top:40px;
+background:#111827;
+border-radius:16px;
+padding:25px;
+line-height:1.8;
+}
+
+.brief h2{
+margin-top:0;
+color:#facc15;
+}
+
+</style>
+
 </head>
+
 <body>
-  <h1>AI 全球市場觀察站</h1>
-  <div class="subtitle">曾老師的個人市場儀表板｜全球市場 + AI 每日摘要</div>
 
-  <div class="grid">
-  <div class="card">
-    <h2>加密貨幣</h2>
-    <div class="item">BTC：82,430</div>
-    <div class="item">ETH：4,120</div>
-  </div>
+<h1>AI 全球市場觀察站</h1>
 
-  <div class="card">
-    <h2>美股指數</h2>
-    <div class="item">S&P500：5,210</div>
-    <div class="item">NASDAQ：18,100</div>
-  </div>
-
-  <div class="card">
-    <h2>台灣市場</h2>
-    <div class="item">TAIEX：19,320</div>
-    <div class="item">台積電：965</div>
-  </div>
-
-  <div class="card">
-    <h2>原物料</h2>
-    <div class="item">Gold：2,150</div>
-    <div class="item">Oil：78.3</div>
-  </div>
-
-  <div class="card">
-    <h2>外匯</h2>
-    <div class="item">USDJPY：150.2</div>
-    <div class="item">美元指數：104.1</div>
-  </div>
+<div class="subtitle">
+曾老師的 AI 全球市場監控儀表板
 </div>
 
-  <div class="brief">
-    <h2>AI 每日市場摘要</h2>
-    <p>
-      這裡之後會放 AI 自動整理的每日市場重點。<br>
-      例如：美股上漲、比特幣震盪、黃金走強、美元偏強、台股科技股表現等。<br>
-      下一步我會帶您把這裡變成「真的會自動更新的內容」。
-    </p>
-  </div>
+<div class="grid">
+
+<div class="card">
+<h2>加密貨幣</h2>
+<div class="item">BTC：82,430</div>
+<div class="item">ETH：4,120</div>
+</div>
+
+<div class="card">
+<h2>美股指數</h2>
+<div class="item">S&P500：5,210</div>
+<div class="item">NASDAQ：18,100</div>
+</div>
+
+<div class="card">
+<h2>台灣市場</h2>
+<div class="item">TAIEX：19,320</div>
+<div class="item">台積電：965</div>
+</div>
+
+<div class="card">
+<h2>原物料</h2>
+<div class="item">Gold：2,150</div>
+<div class="item">Oil：78.3</div>
+</div>
+
+<div class="card">
+<h2>外匯</h2>
+<div class="item">USDJPY：150.2</div>
+<div class="item">美元指數：104.1</div>
+</div>
+
+<div class="card">
+<h2>期貨市場</h2>
+<div class="item">NASDAQ Futures</div>
+<div class="item">S&P500 Futures</div>
+</div>
+
+</div>
+
+<div class="brief">
+
+<h2>AI 每日市場摘要</h2>
+
+<p>
+這裡將會放 AI 自動生成的市場摘要。
+未來系統會每天自動整理：
+</p>
+
+<ul>
+<li>全球金融市場重要新聞</li>
+<li>加密貨幣市場變化</li>
+<li>美股與台股趨勢</li>
+<li>美元、黃金、原油動態</li>
+<li>期貨市場方向</li>
+</ul>
+
+<p>
+目標是每天只需要 5 分鐘，
+就能掌握全球市場的重要變化。
+</p>
+
+</div>
+
 </body>
+
 </html>
