@@ -26,6 +26,7 @@ jobs:
 
       - name: Run Python script
         run: python fetch_data.py
+            python news_fetch.py
 
       - name: Commit updated data
         run: |
