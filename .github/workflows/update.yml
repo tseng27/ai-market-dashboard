@@ -21,7 +21,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install yfinance feedparser
+          pip install yfinance
+          pip install feedparser
 
       - name: Run scripts
         run: |
