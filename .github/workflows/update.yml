@@ -10,21 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4  # 升級到 v4 解決警告
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5  # 升級到 v5 解決警告
         with:
           python-version: '3.10'
 
       - name: Install dependencies
         run: |
-          pip install yfinance
-          pip install requests
+          python -m pip install --upgrade pip
+          pip install yfinance requests feedparser  # 在這裡補上了 feedparser
 
       - name: Run scripts
         run: |
